@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#' Title\n#'\n#' @param x\n#' @param D\n#' @param meanlog\n#' @param sdlog\n#'\n#' @return\n#' @export\n#'\n#' @examples\n#'# Simulate a pareto sample\n#' n <- 1e3 ; meanlog <- 1 ; sdlog <- 2\n#' set.seed(100) ; X <- sort(rlnorm(n, meanlog, sdlog))\n#' d <- 1:4\n#' # Compare the ECDF with the theoritical CDF\n#' plot(X,ecdf(X)(X), type = \"l\")\n#' lines(X,ppareto(X, scale, shape), col = \"red\")\n\nDlnorm <- function(x,D,meanlog,sdlog)\n{\n\n  output <- rep(0,length(x) )\n  supp <- x >0\n  xs   <- x[supp]\n\n  Xs <- (log(xs) - meanlog)/sdlog + sdlog\n\n  if (D == 1) output[supp] <- dlnorm(xs,meanlog,sdlog)\n  if (D == 2) output[supp] <- -1/(xs*sdlog)*dlnorm(xs,meanlog,sdlog)*Xs\n  if (D == 3) output[supp] <- 1/(xs*sdlog)^2*dlnorm(xs,meanlog,sdlog)*( Xs^2 + sdlog*Xs - 1)\n  if (D > 3) return(\"Not available in this package.\")\n  return(output)\n}\n\n#' Title\n#'\n#' @param k\n#' @param meanlog\n#' @param sdlog\n#' @param lower\n#'\n#' @return\n#' @export\n#'\n#' @examples\npartialExectationlnorm <- function(x, meanlog,sdlog, lower = TRUE)\n{\n  mean <- exp(meanlog + sdlog^2/2)\n  if (lower)  output <- mean*pnorm( (log(x) -meanlog)/sdlog,sdlog,1)\n  if (!lower) output <- mean*(1 - pnorm( (log(x) -meanlog)/sdlog,sdlog,1))\n  return(output)\n}\n\n# # Convex point of the pdf\n# convpt.dlnorm = function(meanlog,sdlog) exp(meanlog + sdlog*(sqrt(sdlog^2 + 4) - 3*sdlog)/2 )\n#\n# UpperTruncMomLogN = function(a,order,meanlog,sdlog) #E[X^iI(x>a)]\n# {\n#   if (round(order)!= order)\n#   {\n#     print(\"The order must be an integer\")\n#     break\n#   }\n#\n#\n#   result = exp(meanlog*order +  1/2*(sdlog*order)^2)*(1-pnorm( (log(a) - meanlog)/sdlog,sdlog*order,1))\n#   output = result\n#\n#   return(output)\n# }\n",
+    "created" : 1475501415722.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1172105672",
+    "id" : "338EC935",
+    "lastKnownWriteTime" : 1475510447,
+    "last_content_update" : 1475510447236,
+    "path" : "/src/BU/MyPackages/DistributionPty/R/LogNormal.R",
+    "project_path" : "R/LogNormal.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
