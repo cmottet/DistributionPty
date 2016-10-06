@@ -65,8 +65,7 @@ asymptoticCIforGPDfit <- function(fitGPD,h,hGrad, alpha = 0.05,bonferroni = 1,ve
   beta <- as.numeric(fitGPD$par.ests[2])
   tmp     <- fitGPD$varcov
 
-  u <- fitGPD$threshold
-  Fn <- ecdf(fitGPD$data)
+  Fnu <- fitGPD$p.less.thresh
   nexc <- fitGPD$n.exceed
 
   Sigma   <- matrix( (1+xi)*c( (1+xi),-beta,-beta,2*beta^2),ncol =2,nrow = 2)
@@ -74,7 +73,7 @@ asymptoticCIforGPDfit <- function(fitGPD,h,hGrad, alpha = 0.05,bonferroni = 1,ve
   # Point estimate of h for the given estimation of xi and beta
   hHat <- h(xi,beta)
 
-  if (xi < -1)   return(CI = c(NaN,NaN))
+  if (xi < -1)   output <- data.frame(lB = NA, hHat = NA, uB = NA)
   if (xi >= -1)
   {
 
@@ -87,7 +86,7 @@ asymptoticCIforGPDfit <- function(fitGPD,h,hGrad, alpha = 0.05,bonferroni = 1,ve
     CI <- hHat + qnorm(c(alpha/(2*bonferroni),1-alpha/(2*bonferroni)))*sdHat
   }
 
-  output <- (1 - Fn(u))*data.frame(lB = CI[1], hHat = hHat, uB = CI[2])
+  output <- (1 - Fnu)*data.frame(lB = CI[1], hHat = hHat, uB = CI[2])
 
   return(output)
 }
