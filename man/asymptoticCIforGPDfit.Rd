@@ -2,16 +2,33 @@
 % Please edit documentation in R/GPD.R
 \name{asymptoticCIforGPDfit}
 \alias{asymptoticCIforGPDfit}
-\title{Title}
+\title{Build (1-alpha) confidence intervals of functions of GPD parameters}
 \usage{
-asymptoticCIforGPDfit(fitGPD, h, hGrad, alpha = 0.05, bonferroni = 1,
-  verbose = TRUE)
+asymptoticCIforGPDfit(fitGPD, h, hGrad, alpha = 0.05, verbose = TRUE)
 }
 \arguments{
-\item{verbose}{}
+\item{fitGPD}{An object obtained using the function \emph{fit.GPD} available in the
+package \emph{QRM} available on CRAN}
+
+\item{h}{A function taking for argument the shape \emph{xi}, and scale \emph{beta} parameters
+of a GPD distribution}
+
+\item{hGrad}{The gradient of the function h w.r.t to \emph{xi}, and \emph{beta}, in that order}
+
+\item{alpha}{The desired level of accuracy for the confidence interval}
+
+\item{verbose}{A logical value indicating wether messages should be printed on the screen}
+}
+\value{
+a data frame containing three values
+\item{lB}{the lower bound of the confidence interval}
+\item{hHat}{the estimated value of h(xi,beta)}
+\item{uB}{the upper bound of the confidence interval}
 }
 \description{
-Title
+This function applies the delta method to derive a (1-alpha) confidence interval
+of the function h(xi, beta) where xi, and beta are respectively the MLE estimators
+of the shape and scale parameters of a GPD distribution.
 }
 \examples{
 library(QRM)

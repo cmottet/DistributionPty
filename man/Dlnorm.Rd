@@ -2,23 +2,27 @@
 % Please edit documentation in R/LogNormal.R
 \name{Dlnorm}
 \alias{Dlnorm}
-\title{Title}
+\title{Derivative w.r.t. x of the log-normal distribution function}
 \usage{
 Dlnorm(x, D, meanlog, sdlog)
 }
 \arguments{
-\item{sdlog}{}
+\item{x}{vector of quantiles}
+
+\item{D}{an integer between 0 and 3. The derivatives are not available
+in this package when D > 3}
+
+\item{meanlog, sdlog}{mean and standard deviation of the distribution
+on the log scale with default values of 0 and 1 respectively.}
+}
+\value{
+Dlnorm gives the  distribution function when D = 0, the density
+ when D  = 1, the derivative of the density when D = 2, and so on
 }
 \description{
-Title
+Derivative w.r.t. x of the log-normal distribution function
 }
 \examples{
-# Simulate a pareto sample
-n <- 1e3 ; meanlog <- 1 ; sdlog <- 2
-set.seed(100) ; X <- sort(rlnorm(n, meanlog, sdlog))
-d <- 1:4
-# Compare the ECDF with the theoritical CDF
-plot(X,ecdf(X)(X), type = "l")
-lines(X,ppareto(X, scale, shape), col = "red")
+Dlnorm(1,1,0,2)
 }
 

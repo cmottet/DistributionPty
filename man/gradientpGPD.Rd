@@ -2,14 +2,28 @@
 % Please edit documentation in R/GPD.R
 \name{gradientpGPD}
 \alias{gradientpGPD}
-\title{Title}
+\title{Gradient of the Generalized Pareto Distribution function w.r.t. to the scale and shape parameter}
 \usage{
 gradientpGPD(x, xi, beta, eps = 1e-12)
 }
 \arguments{
-\item{eps}{}
+\item{x}{Vector of real values}
+
+\item{xi, }{beta Shape and scale parameters of the GPD}
+
+\item{eps}{Numerical tolerance on the shape parameter \code{xi}. If \code{xi < eps},
+the GPD is considered to be an exponential distribution function with scale \code{beta}.
+Default value is 1e-12.}
 }
 \description{
-Title
+Gradient of the Generalized Pareto Distribution function w.r.t. to the scale and shape parameter
+}
+\examples{
+
+gradientpGPD(-5:5,1,1)
+
+# If the distribution is numerically similar to an exponential distribution
+gradientpGPD(-5:5,0,1)
+
 }
 

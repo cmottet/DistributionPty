@@ -1,71 +1,50 @@
-#' Title
+#' Derivative w.r.t. x of the log-normal distribution function
+#' @param x vector of quantiles
+#' @param meanlog,sdlog mean and standard deviation of the distribution
+#'  on the log scale with default values of 0 and 1 respectively.
+#' @param D an integer between 0 and 3. The derivatives are not available
+#'  in this package when D > 3
 #'
-#' @param x
-#' @param D
-#' @param meanlog
-#' @param sdlog
-#'
-#' @return
+#' @return Dlnorm gives the  distribution function when D = 0, the density
+#'  when D  = 1, the derivative of the density when D = 2, and so on
 #' @export
 #'
 #' @examples
-#'# Simulate a pareto sample
-#' n <- 1e3 ; meanlog <- 1 ; sdlog <- 2
-#' set.seed(100) ; X <- sort(rlnorm(n, meanlog, sdlog))
-#' d <- 1:4
-#' # Compare the ECDF with the theoritical CDF
-#' plot(X,ecdf(X)(X), type = "l")
-#' lines(X,ppareto(X, scale, shape), col = "red")
-
+#' Dlnorm(1,1,0,2)
 Dlnorm <- function(x,D,meanlog,sdlog)
 {
+  if (round(D) != D || D < 0) {
+    print("D must be a non-negative integer.")
+    return(NaN)
+    }
 
-  output <- rep(0,length(x) )
-  supp <- x >0
-  xs   <- x[supp]
+  X <- (log(x) - meanlog)/sdlog + sdlog
 
-  Xs <- (log(xs) - meanlog)/sdlog + sdlog
-
-  if (D == 1) output[supp] <- dlnorm(xs,meanlog,sdlog)
-  if (D == 2) output[supp] <- -1/(xs*sdlog)*dlnorm(xs,meanlog,sdlog)*Xs
-  if (D == 3) output[supp] <- 1/(xs*sdlog)^2*dlnorm(xs,meanlog,sdlog)*( Xs^2 + sdlog*Xs - 1)
-  if (D > 3) return("Not available in this package.")
+  if (D == 0) output <- plnorm(x,meanlog,sdlog)
+  if (D == 1) output <- dlnorm(x,meanlog,sdlog)
+  if (D == 2) output <- -1/(x*sdlog)*dlnorm(x,meanlog,sdlog)*X
+  if (D == 3) output <- 1/(x*sdlog)^2*dlnorm(x,meanlog,sdlog)*(X^2 + sdlog*X - 1)
+  if (D > 3)  output  <- ("Not available in this package.")
   return(output)
 }
 
-#' Title
+#' Compute E[X I(X <= x)] when X follows a log-normal distribution
 #'
-#' @param k
-#' @param meanlog
-#' @param sdlog
-#' @param lower
+#' @param x A positive vector
+#' @inheritParams Dlnorm
+#' @param lower Logical value determining whether the lower or the upper partial
+#' expectation should be computed, the function should return E[X I(X <= x)] or
+#' E[X I(X > x)].  Default is TRUE for lower expectation.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-partialExectationlnorm <- function(x, meanlog,sdlog, lower = TRUE)
+#' partialExpectationlnorm(1, 0,1, lower = TRUE)
+partialExpectationlnorm <- function(x, meanlog,sdlog, lower = TRUE)
 {
   mean <- exp(meanlog + sdlog^2/2)
   if (lower)  output <- mean*pnorm( (log(x) -meanlog)/sdlog,sdlog,1)
   if (!lower) output <- mean*(1 - pnorm( (log(x) -meanlog)/sdlog,sdlog,1))
   return(output)
 }
-
-# # Convex point of the pdf
-# convpt.dlnorm = function(meanlog,sdlog) exp(meanlog + sdlog*(sqrt(sdlog^2 + 4) - 3*sdlog)/2 )
-#
-# UpperTruncMomLogN = function(a,order,meanlog,sdlog) #E[X^iI(x>a)]
-# {
-#   if (round(order)!= order)
-#   {
-#     print("The order must be an integer")
-#     break
-#   }
-#
-#
-#   result = exp(meanlog*order +  1/2*(sdlog*order)^2)*(1-pnorm( (log(a) - meanlog)/sdlog,sdlog*order,1))
-#   output = result
-#
-#   return(output)
-# }

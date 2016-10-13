@@ -2,14 +2,25 @@
 % Please edit documentation in R/Pareto.R
 \name{UpperTruncMomPareto}
 \alias{UpperTruncMomPareto}
-\title{Title}
+\title{Calculate E[X^mI(x =>a)] when X follows a pareto distribution}
 \usage{
 UpperTruncMomPareto(a, m, scale = 1, shape = 1)
 }
 \arguments{
-\item{shape}{}
+\item{a}{A real value}
+
+\item{m}{A vector of real numbers}
+
+\item{scale}{Positive real values respectively defining the shape and scale
+parameter of the Pareto distributon. Default value is 1 for both of them}
+
+\item{shape}{Positive real values respectively defining the shape and scale
+parameter of the Pareto distributon. Default value is 1 for both of them}
 }
 \description{
-Title
+Calculate E[X^mI(x =>a)] when X follows a pareto distribution
+}
+\examples{
+UpperTruncMomPareto(scale,1,scale=1,shape = 2)
 }
 
