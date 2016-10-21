@@ -4,7 +4,7 @@
 \alias{partialExpectationlnorm}
 \title{Compute E[X I(X <= x)] when X follows a log-normal distribution}
 \usage{
-partialExpectationlnorm(x, meanlog, sdlog, lower = TRUE)
+partialExpectationlnorm(x, meanlog = 0, sdlog = 1, lower = TRUE)
 }
 \arguments{
 \item{x}{A positive vector}

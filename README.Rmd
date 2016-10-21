@@ -1,0 +1,4 @@
+### README
+This is an R package whose functions return properties of a set of  probability
+distribution functions. As an example, the function *Dexp* gives the d-th order derivative of the 
+expontential distribution function. 

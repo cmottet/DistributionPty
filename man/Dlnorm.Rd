@@ -4,7 +4,7 @@
 \alias{Dlnorm}
 \title{Derivative w.r.t. x of the log-normal distribution function}
 \usage{
-Dlnorm(x, D, meanlog, sdlog)
+Dlnorm(x, D, meanlog = 0, sdlog = 1)
 }
 \arguments{
 \item{x}{vector of quantiles}

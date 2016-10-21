@@ -11,20 +11,30 @@
 #'
 #' @examples
 #' Dlnorm(1,1,0,2)
-Dlnorm <- function(x,D,meanlog,sdlog)
+Dlnorm <- function(x,D,meanlog = 0,sdlog = 1)
 {
   if (round(D) != D || D < 0) {
     print("D must be a non-negative integer.")
     return(NaN)
-    }
+  }
 
-  X <- (log(x) - meanlog)/sdlog + sdlog
 
   if (D == 0) output <- plnorm(x,meanlog,sdlog)
   if (D == 1) output <- dlnorm(x,meanlog,sdlog)
-  if (D == 2) output <- -1/(x*sdlog)*dlnorm(x,meanlog,sdlog)*X
-  if (D == 3) output <- 1/(x*sdlog)^2*dlnorm(x,meanlog,sdlog)*(X^2 + sdlog*X - 1)
-  if (D > 3)  output  <- ("Not available in this package.")
+
+  output <- rep(0,length(x))
+  supp <- x > 0
+  xs <- x[supp]
+  Xs <- (log(xs) - meanlog)/sdlog + sdlog
+
+
+  if (D == 2) output[supp] <- -1/(sdlog*xs)^2*dnorm(log(xs),meanlog,sdlog)*Xs
+  if (D == 3) output[supp] <- 1/(xs*sdlog)^3*dnorm(log(xs),meanlog,sdlog)*(Xs^2 + sdlog*Xs - 1)
+  if (D > 3)  {
+    print("Not available for this package version")
+    output[supp]  <- NA
+  }
+
   return(output)
 }
 
@@ -41,7 +51,7 @@ Dlnorm <- function(x,D,meanlog,sdlog)
 #'
 #' @examples
 #' partialExpectationlnorm(1, 0,1, lower = TRUE)
-partialExpectationlnorm <- function(x, meanlog,sdlog, lower = TRUE)
+partialExpectationlnorm <- function(x, meanlog = 0,sdlog = 1, lower = TRUE)
 {
   mean <- exp(meanlog + sdlog^2/2)
   if (lower)  output <- mean*pnorm( (log(x) -meanlog)/sdlog,sdlog,1)
