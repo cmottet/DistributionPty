@@ -2,14 +2,24 @@
 
 export(Dexp)
 export(Dlnorm)
-export(Dpareto)
+export(partialExpectationlnorm)
+
 export(UpperTruncMomPareto)
 export(asymptoticCIforGPDfit)
+
+export(Dpareto)
 export(dpareto)
-export(gradientpGPD)
-export(partialExpectationlnorm)
 export(ppareto)
 export(qpareto)
 export(rpareto)
+
+export(plhorror)
+export(qlhorror)
+export(dlhorror)
+export(Dlhorror)
+export(UpperTrunclHorrorMoment)
+
+export(gradientpGPD)
 importFrom(QRM,dGPD)
 importFrom(QRM,pGPD)
+importFrom(pracma,gammainc)
