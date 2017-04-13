@@ -21,20 +21,20 @@ Dlnorm <- function(x,D,meanlog = 0,sdlog = 1)
 
   if (D == 0) output <- plnorm(x,meanlog,sdlog)
   if (D == 1) output <- dlnorm(x,meanlog,sdlog)
+  if (D > 1){
+    output <- rep(0,length(x))
+    supp <- x > 0
+    xs <- x[supp]
+    Xs <- (log(xs) - meanlog)/sdlog + sdlog
 
-  output <- rep(0,length(x))
-  supp <- x > 0
-  xs <- x[supp]
-  Xs <- (log(xs) - meanlog)/sdlog + sdlog
 
-
-  if (D == 2) output[supp] <- -1/(sdlog*xs)^2*dnorm(log(xs),meanlog,sdlog)*Xs
-  if (D == 3) output[supp] <- 1/(xs*sdlog)^3*dnorm(log(xs),meanlog,sdlog)*(Xs^2 + sdlog*Xs - 1)
-  if (D > 3)  {
-    print("Not available for this package version")
-    output[supp]  <- NA
+    if (D == 2) output[supp] <- -1/(sdlog*xs)^2*dnorm((log(xs)-meanlog)/sdlog)*Xs
+    if (D == 3) output[supp] <- 1/(xs*sdlog)^3*dnorm((log(xs)-meanlog)/sdlog)*(Xs^2 + sdlog*Xs - 1)
+    if (D > 3)  {
+      print("Not available for this package version")
+      output[supp]  <- NA
+    }
   }
-
   return(output)
 }
 
@@ -54,7 +54,7 @@ Dlnorm <- function(x,D,meanlog = 0,sdlog = 1)
 partialExpectationlnorm <- function(x, meanlog = 0,sdlog = 1, lower = TRUE)
 {
   mean <- exp(meanlog + sdlog^2/2)
-  if (lower)  output <- mean*pnorm( (log(x) -meanlog)/sdlog,sdlog,1)
-  if (!lower) output <- mean*(1 - pnorm( (log(x) -meanlog)/sdlog,sdlog,1))
+  if (lower)  output <- mean*pnorm( (log(x) -meanlog)/sdlog - sdlog)
+  if (!lower) output <- mean*(1 - pnorm( (log(x) -meanlog)/sdlog - sdlog))
   return(output)
 }
