@@ -13,4 +13,5 @@ LazyData: TRUE
 RoxygenNote: 5.0.1.9000
 Suggests: ggplot2
 Import: QRM,
-        pracma
+        pracma,
+        EQL
