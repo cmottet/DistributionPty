@@ -44,18 +44,17 @@ Dlhorror <- function(x,D){
   return(output)
 }
 
-UpperTrunclHorrorMoment <- function(a,order,seed, eps = 1e-4)
+rlhorror <- function(n) log(rhorror(n))
+###
+### E[(X-a)_+^j]
+###
+UpperTrunclHorrorMoment <- function(a,order,seed, n = 1e6)
 {
   xmin <- qlhorror(0)
-  A <- pmax(a,xmin)
-  if (order <0){ print("The order must be non-negative") ; return(NA)} else
-  {
-    if (order == 0) output <- 1 - plhorror(A)
-    if (order == 1) {
-      if (A > 1)  output <- exp(-A) + as.numeric(gammainc(A,0)[2])
-      if (A <= 1) output <- exp(-A) + integrate(function(x)exp(-x)/x,lower = A,upper = Inf)$value
-    }
-    if ( !(order %in% c(0,1)) ) output <- (1+ 1/(order-1))*as.numeric(gammainc(A,order)[2]) -  A^(order -1)*exp(-A)/(order-1)
+  if (a < xmin){
+    print("a must be larger than lower bound of the distribution support, i.e. 0.567")
+    return(NaN)
   }
+  output <- if (order == 0) 1 - plhorror(a) else{X = rlhorror(n); mean((X-a)^order*I(X >= a)) }
   return(output)
 }

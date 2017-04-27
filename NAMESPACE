@@ -24,6 +24,7 @@ export(ddhorror)
 export(d2dhorror)
 export(UpperTruncHorrorMoment)
 
+export(rlhorror)
 export(plhorror)
 export(qlhorror)
 export(dlhorror)
